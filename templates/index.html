@@ -17,15 +17,17 @@ limitations under the License.
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glassware Starter Project</title>
-  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+  <title>Note to Self</title>
+  <!--<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         media="screen">
   <link href="/static/bootstrap/css/bootstrap-responsive.min.css"
-        rel="stylesheet" media="screen">
+        rel="stylesheet" media="screen">-->
   <link href="/static/main.css" rel="stylesheet" media="screen">
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata|Cousine|Raleway|Lato:400,700' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
+<!-- <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="#">Glassware Starter Project: Python Edition</a>
@@ -37,16 +39,53 @@ limitations under the License.
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
 <div class="container">
+  <h1>Note to Self</h1>
+
+  <div class="row" id="map-container-row">
+    <div class="span6">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map-canvas"></div>
+    </div>
+    <div class="span6">
+      <table id="reminders">
+        <thead>
+          <tr>
+            <th width="60%">Reminder</th>
+            <th width="20%">Latitude</th>
+            <th width="20%">Longitude</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="entry">
+            <td class="name">Check mail</td>
+            <td class="latitude">37.444259</td>
+            <td class="longitude">-122.175147</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="add-reminder-container" style="display:none;">
+        <h4>Title:</h4> 
+        <input id="reminder-name" type="text"></input>
+        <input id="reminder-lat" type="hidden"></input>
+        <input id="reminder-lng" type="hidden"></input>
+        <br>
+        <button id="add-reminder">Add Reminder</button>
+        <button id="cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
 
   {% if message %}
   <div class="alert alert-info">{{ message }}</div>
   {% endif %}
 
   <h1>Your Recent Timeline</h1>
-  <div class="row">
+  <div class="row" style="display:none;">
 
     <div style="margin-top: 5px;">
 
@@ -106,7 +145,7 @@ limitations under the License.
   </div>
 
   <div class="row">
-    <div class="span4">
+    <div class="span6">
       <h2>Timeline</h2>
 
       <p>When you first sign in, this Glassware inserts a welcome message. Use
@@ -124,7 +163,7 @@ limitations under the License.
 
       <form action="/" method="post">
         <input type="hidden" name="operation" value="insertItem">
-        <input type="hidden" name="message" value="Chipotle says 'hi'!">
+        <input type="hidden" name="message" value="Reminder">
         <input type="hidden" name="imageUrl"
                value="/static/images/chipotle-tube-640x360.jpg">
         <input type="hidden" name="contentType" value="image/jpeg">
@@ -155,94 +194,153 @@ limitations under the License.
 
     </div>
 
-    <div class="span4">
-      <h2>Contacts</h2>
-      <p>By default, this project inserts a single contact that accepts
-      all content types. Learn more about contacts
-        <a href="https://developers.google.com/glass/contacts">here</a>.</p>
 
-      {% if contact %}
-      <form action="/" method="post">
-        <input type="hidden" name="operation" value="deleteContact">
-        <input type="hidden" name="id" value="python-quick-start">
-        <button class="btn btn-block btn-danger" type="submit">
-          Delete Python Quick Start Contact
-        </button>
-      </form>
-      {% else %}
-      <form action="/" method="post">
-        <input type="hidden" name="operation" value="insertContact">
-        <input type="hidden" name="imageUrl"
-               value="/static/images/python.png">
-        <input type="hidden" name="name" value="Python Quick Start">
-        <input type="hidden" name="id" value="python-quick-start">
-        <button class="btn btn-block btn-success" type="submit">
-          Insert Python Quick Start Contact
-        </button>
-      </form>
-      {% endif %}
 
-      <h3>Voice Commands</h3>
-      <p>The "Python Quick Start" contact also accepts the <strong>take a
-        note</strong> command. Take a note with the "Python Quick Start"
-        contact and the cat in the server will record your note and reply
-        with one of a few cat utterances.</p>
-    </div>
-
-    <div class="span4">
-      <h2>Subscriptions</h2>
-
-      <p>
-        By default a subscription is inserted for changes to the
-        <code>timeline</code> collection. Learn more about subscriptions
-        <a href="https://developers.google.com/glass/subscriptions">here</a>.
-      </p>
-
-      <div class="alert alert-info">
-        Note: Subscriptions require SSL. They will not work on localhost.
-      </div>
-
-      {% if timelineSubscriptionExists %}
-      <form action="/" method="post">
-        <input type="hidden" name="subscriptionId" value="timeline">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit">
-          Unsubscribe from timeline updates
-        </button>
-      </form>
-      {% else %}
-      <form action="/" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="timeline">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to timeline updates
-        </button>
-      </form>
-      {% endif %}
-
-      {% if locationSubscriptionExists %}
-      <form action="/" method="post">
-        <input type="hidden" name="subscriptionId" value="locations">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit">
-          Unsubscribe from location updates
-        </button>
-      </form>
-      {% else %}
-      <form action="/" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="locations">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to location updates
-        </button>
-      </form>
-      {% endif %}
-    </div>
   </div>
 </div>
 
 <script
     src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script>
+  var mostRecentMarker = null;
+  var mostRecentInfoWindow = null;
+  var map = null;
+
+  function initialize() {
+    var markers = [];
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+     var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(37.437445, -122.170341),
+      new google.maps.LatLng(37.425449, -122.162273));
+    map.fitBounds(defaultBounds);
+
+    // Create the search box and link it to the UI element.
+    var input = /** @type {HTMLInputElement} */(
+        document.getElementById('pac-input'));
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    var searchBox = new google.maps.places.SearchBox(
+      /** @type {HTMLInputElement} */(input));
+
+    // [START region_getplaces]
+    // Listen for the event fired when the user selects an item from the
+    // pick list. Retrieve the matching places for that item.
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+      var places = searchBox.getPlaces();
+
+      for (var i = 0, marker; marker = markers[i]; i++) {
+        marker.setMap(null);
+      }
+
+      // For each place, get the icon, place name, and location.
+      markers = [];
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0, place; place = places[i]; i++) {
+        var image = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        var marker = new google.maps.Marker({
+          map: map,
+          icon: image,
+          title: place.name,
+          position: place.geometry.location
+        });
+
+        markers.push(marker);
+
+        bounds.extend(place.geometry.location);
+      }
+
+      map.fitBounds(bounds);
+    });
+    // [END region_getplaces]
+
+    // Bias the SearchBox results towards places that are within the bounds of the
+    // current map's viewport.
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      var bounds = map.getBounds();
+      searchBox.setBounds(bounds);
+    });
+
+    google.maps.event.addListener(map, 'click', function(event) {
+      mostRecentMarker = placeMarker("Set reminder?", event.latLng, map);
+      console.log('adding a place marker');
+
+      $('#reminder-lat').val(event.latLng.lat());
+      $('#reminder-lng').val(event.latLng.lng());
+      $('#add-reminder-container').show();
+    });
+    addReminderMarkers(map);
+  }
+
+  function placeMarker(name, location, map) {
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+    var mostRecentInfoWindow = infowindow;
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.setContent(name);
+      infowindow.open(map, this);
+      console.log('opening infowindow');
+    });
+
+    return marker;
+    //map.setCenter(location);
+  }
+
+  function addReminderMarkers(map) {
+    $('.entry').each(function() {
+      var name = $(this).children('.name').text();
+      var latitude = $(this).children('.latitude').text();
+      var longitude = $(this).children('.longitude').text();
+
+      var latLng = new google.maps.LatLng(latitude, longitude)
+
+      placeMarker(name, latLng, map);
+    });
+  }
+
+  $('#add-reminder').click(function() {
+    var name = $('#reminder-name').val();
+    var lat = $('#reminder-lat').val();
+    var lng = $('#reminder-lng').val();
+    console.log(lat);
+    console.log(lng);
+    $('#reminders tbody').append(
+      $('<tr>').append($('<td>').text(name))
+               .append($('<td>').text(lat))
+               .append($('<td>').text(lng))
+      );
+    $('#add-reminder-container').hide();
+    mostRecentMarker.setMap(null);
+    $("#reminder-name").val("");
+    placeMarker(name, new google.maps.LatLng(lat, lng), map);
+  });
+
+  $('#cancel').click(function() {
+    mostRecentMarker.setMap(null);
+    $('#add-reminder-container').hide();
+  })
+
+  $(document).ready(function() {
+    initialize();
+  });
+
+</script>
 </body>
 </html>

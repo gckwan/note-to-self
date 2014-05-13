@@ -41,16 +41,20 @@ jinja_environment = jinja2.Environment(
 
 
 PAGINATED_HTML = """
-<article class='auto-paginate'>
-<h2 class='blue text-large'>Did you know...?</h2>
-<p>Cats are <em class='yellow'>solar-powered.</em> The time they spend
-napping in direct sunlight is necessary to regenerate their internal
-batteries. Cats that do not receive sufficient charge may exhibit the
-following symptoms: lethargy, irritability, and disdainful glares. Cats
-will reactivate on their own automatically after a complete charge
-cycle; it is recommended that they be left undisturbed during this
-process to maximize your enjoyment of your cat.</p><br/><p>
-For more cat maintenance tips, tap to view the website!</p>
+<article>
+  <figure>
+    <img src="glass://map?w=240&h=360&marker=0;42.369590,
+      -71.107132&marker=1;42.36254,-71.08726&polyline=;42.36254,
+      -71.08726,42.36297,-71.09364,42.36579,-71.09208,42.3697,
+      -71.102,42.37105,-71.10104,42.37067,-71.1001,42.36561,
+      -71.10406,42.36838,-71.10878,42.36968,-71.10703"
+      height="360" width="240">
+  </figure>
+  <section>
+    <div class="text-auto-size">
+      <p class="yellow">12 minutes to home</p><p>Medium traffic on Broadway</p>
+    </div>
+  </section>
 </article>
 """
 

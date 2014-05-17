@@ -44,10 +44,7 @@ PAGINATED_HTML = """
 <article>
   <figure>
     <img src="glass://map?w=240&h=360&marker=0;42.369590,
-      -71.107132&marker=1;42.36254,-71.08726&polyline=;42.36254,
-      -71.08726,42.36297,-71.09364,42.36579,-71.09208,42.3697,
-      -71.102,42.37105,-71.10104,42.37067,-71.1001,42.36561,
-      -71.10406,42.36838,-71.10878,42.36968,-71.10703"
+      -71.107132&marker=1;42.36254,-71.08726&polyline=;"
       height="360" width="240">
   </figure>
   <section>
@@ -133,7 +130,7 @@ class MainHandler(webapp2.RequestHandler):
         'insertContact': self._insert_contact,
         'deleteContact': self._delete_contact,
         'deleteTimelineItem': self._delete_timeline_item,
-        'insertMap': self._insert_map
+        'insertReminder': self._insert_reminder
     }
     if operation in operations:
       message = operations[operation]()
@@ -185,6 +182,36 @@ class MainHandler(webapp2.RequestHandler):
     # self.mirror_service is initialized in util.auth_required.
     self.mirror_service.timeline().insert(body=body, media_body=media).execute()
     return  'A timeline item has been inserted.'
+
+  def _insert_reminder(self):
+    """Insert a reminder."""
+    logging.info('Inserting reminder')
+    lat = self.request.get('reminder-lat')
+    lng = self.request.get('reminder-lng')
+    text = self.request.get('sent-reminder-name')
+    logging.info('THIS IS TEXT:' + text)
+
+    map_html = '''
+    <article>
+      <figure>
+        <img src="glass://map?w=240&h=360&marker=0;{0},
+          {1}&polyline=;"
+          height="360" width="240">
+      </figure>
+      <section>
+        <div class="text-auto-size">
+          <p class="yellow">Reminder</p>
+          <p>{2}</p>
+        </div>
+      </section>
+    </article>'''.format(lat, lng, text)
+    body = {
+        'html': map_html,
+        'notification': {'level': 'DEFAULT'}
+    }
+
+    self.mirror_service.timeline().insert(body=body).execute()
+    return  'A timeline reminder has been inserted.'
 
   def _insert_paginated_item(self):
     """Insert a paginated timeline item."""

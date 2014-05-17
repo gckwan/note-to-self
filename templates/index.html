@@ -69,11 +69,20 @@ limitations under the License.
 
       <div id="add-reminder-container" style="display:none;">
         <h4>Title:</h4> 
-        <input id="reminder-name" type="text"></input>
-        <input id="reminder-lat" type="hidden"></input>
-        <input id="reminder-lng" type="hidden"></input>
-        <br>
-        <button id="add-reminder">Add Reminder</button>
+        <!--<button id="add-reminder">Add Reminder</button>-->
+        <form action="/" method="post">
+          <input type="hidden" name="operation" value="insertReminder">
+          <input id="reminder-name" name="reminder-name" type="text"></input>
+          <input id="sent-reminder-name" name="sent-reminder-name" type="hidden"></input>
+          <input id="reminder-lat" name="reminder-lat" type="hidden"></input>
+          <input id="reminder-lng" name="reminder-lng" type="hidden"></input>
+          <input id="map-bound1-lat" name="map-bound1-lat" type="hidden"></input>
+          <input id="map-bound2-lat" name="map-bound2-lat" type="hidden"></input>
+          <input id="map-bound1-lng" name="map-bound1-lng" type="hidden"></input>
+          <input id="map-bound2-lng" name="map-bound2-lng" type="hidden"></input>
+          <button id="add-reminder" class="btn btn-block" type="submit">
+            Add Reminder</button>
+        </form>
         <button id="cancel">Cancel</button>
       </div>
     </div>
@@ -211,10 +220,20 @@ limitations under the License.
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-     var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(37.437445, -122.170341),
-      new google.maps.LatLng(37.425449, -122.162273));
+    bound1_lat = "37.437445";
+    bound1_lng = "-122.170341";
+    bound2_lat = "37.425449";
+    bound2_lng = "-122.162273";
+
+    var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(bound1_lat, bound1_lng),
+      new google.maps.LatLng(bound2_lat, bound2_lng));
     map.fitBounds(defaultBounds);
+
+    $('#map-bound1-lat').val(bound1_lat);
+    $('#map-bound1-lng').val(bound1_lng);
+    $('#map-bound2-lat').val(bound2_lat);
+    $('#map-bound2-lng').val(bound2_lng);
 
     // Create the search box and link it to the UI element.
     var input = /** @type {HTMLInputElement} */(
@@ -314,6 +333,7 @@ limitations under the License.
 
   $('#add-reminder').click(function() {
     var name = $('#reminder-name').val();
+    $("#sent-reminder-name").val(name);
     var lat = $('#reminder-lat').val();
     var lng = $('#reminder-lng').val();
     console.log(lat);

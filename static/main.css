@@ -16,7 +16,7 @@ table td form, table td input[type='text'], table td button {
 }
 
 #content {
-  margin-top: 100px;
+  margin-top: 110px;
 }
 
 .latitude, .longitude, .hidden-header {
@@ -25,6 +25,23 @@ table td form, table td input[type='text'], table td button {
 
 .timeline-item {
   display: inline-block;
+}
+
+.reminder-btn {
+  padding: 5px;
+  display: inline-block;
+}
+
+#signout-button {
+  position: absolute;
+  top: 17px;
+  right: 0;
+}
+
+#signout-button button {
+  border: none;
+  background-color: transparent;
+  color: white;
 }
 
 #get-location-button {
@@ -37,6 +54,10 @@ table td form, table td input[type='text'], table td button {
   box-shadow: 2px 2px 2px #999;
   border-bottom: none;
   height: 80px;
+}
+
+#nav .container {
+  position: relative;
 }
 
 #nav-title, #nav-title:hover {
@@ -90,7 +111,7 @@ a {
 }
 
 h4 {
-	font-size: 20pt;
+	font-size: 16pt;
 	margin-top: 10px;
 	margin-bottom: 10px;	
 }
@@ -107,6 +128,7 @@ h4 {
 }
 
 #reminders td.name {
+  padding-left: 10px;
   border-bottom: 1px solid #ccc;
 }
 
@@ -152,19 +174,35 @@ button {
 	color: white;
 }
 
+#cancel {
+  margin-left: 10px;
+  border-color: #777;
+}
+
 #cancel:hover {
 	background-color: black;
 	color: white;	
 }
 
+#add-reminder-container {
+  width: 300px;
+  border: 1px solid #777;
+  background-color: #efefef;
+  border-radius: 15px;
+  padding: 8px 15px 17px 15px;
+  margin-top: 30px;
+}
+
 #reminder-name {
-	width: 50%;
+	width: 100%;
 	margin-bottom: 10px;
 	outline-color: #C7C7CC;
 	padding: 10px;
-	border: 1px solid black;
+  height: 40px;
+	border: 1px solid #777;
 	border-radius: 5px;
-	font-size: 16pt;
+	font-size: 14px;
+  padding-left: 5px;
 	font-family: 'Roboto';	
 }
 

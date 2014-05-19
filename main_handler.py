@@ -100,7 +100,7 @@ class MainHandler(webapp2.RequestHandler):
       logging.info(reminder)
 
     if message:
-      template_values['message'] = 'Inserted a new reminder into the timeline.'
+      template_values['message'] = message
     # self.mirror_service is initialized in util.auth_required.
     try:
       template_values['contact'] = self.mirror_service.contacts().get(
@@ -171,7 +171,7 @@ class MainHandler(webapp2.RequestHandler):
       print '  > Lat: %s' % location.get('latitude')
       print '  > Long: %s' % location.get('longitude')
       print '  > Accuracy: %s meters' % location.get('accuracy')
-      MAX_DISTANCE = 100
+      MAX_DISTANCE = 200
 
       lat = location.get('latitude')
       lng = location.get('longitude')
@@ -182,6 +182,21 @@ class MainHandler(webapp2.RequestHandler):
       for reminder in reminders: # for each reminder in the database:
         logging.info(reminder.title)
         distance = self._get_distance(lat, lng, reminder.latitude, reminder.longitude)
+        # logging.info('latitude')
+        # logging.info(lat)
+        # logging.info(reminder.latitude)
+
+        # logging.info('longitude')
+        # logging.info(lng)
+        # logging.info(reminder.longitude)
+        logging.info('Distance from point: ')
+        logging.info(round(distance))
+
+        distance_msg = '%s feet away' % int(round(distance))
+
+        # if distance_feet > 5280:
+        #   distance = distance / 5280
+        #   distance_msg = '%.2f miles away' % distance
 
         if distance < MAX_DISTANCE:
           map_html = '''
@@ -195,12 +210,14 @@ class MainHandler(webapp2.RequestHandler):
               <div class="text-auto-size">
                 <p class="yellow">Reminder</p>
                 <p>{2}</p>
+                <p style="font-size:.7em;">{3}</p>
               </div>
             </section>
-          </article>'''.format(lat, lng, reminder.title)
+          </article>'''.format(lat, lng, reminder.title, distance_msg)
 
           body = {
               'html': map_html,
+              'text': reminder.title,
               'location': location,
               'menuItems': [{'action': 'NAVIGATE'}],
               'notification': {'level': 'DEFAULT'}
@@ -235,8 +252,8 @@ class MainHandler(webapp2.RequestHandler):
            math.cos(phi1)*math.cos(phi2))
     arc = math.acos( cos )
 
-    # Returns distance in feet
-    return arc * 0.75
+    # Returns distance in feet (arc * 3960 = dist in miles, * 5280 = dist in feet)
+    return arc * 3960 * 5280
 
   def _insert_subscription(self):
     """Subscribe the app."""
@@ -308,6 +325,7 @@ class MainHandler(webapp2.RequestHandler):
     </article>'''.format(lat, lng, text)
     body = {
         'html': map_html,
+        'text': text,
         'notification': {'level': 'DEFAULT'}
     }
 	

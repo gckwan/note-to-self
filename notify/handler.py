@@ -44,7 +44,7 @@ CAT_UTTERANCES = [
 class NotifyHandler(webapp2.RequestHandler):
 	"""Request Handler for notification pings."""
 
-	MAX_DISTANCE = 100  # Notify users when they are less than 100 feet from the location.
+	MAX_DISTANCE = 200  # Notify users when they are less than 100 feet from the location.
 
 	def post(self):
 		"""Handles notification pings."""
@@ -86,7 +86,7 @@ class NotifyHandler(webapp2.RequestHandler):
 		arc = math.acos( cos )
 
 		# Returns distance in feet
-		return arc * 0.75
+		return arc * 3960 * 5280
 
 	def _handle_locations_notification(self, data):
 		"""Handle locations notification."""
@@ -97,6 +97,8 @@ class NotifyHandler(webapp2.RequestHandler):
 		reminders = Reminder.gql("WHERE user = :user_id", user_id = users.get_current_user().user_id())
 		for reminder in reminders: # for each reminder in the database:
 			distance = _get_distance(lat, lng, reminder.latitude, reminder.longitude)
+
+			distance_msg = '%s feet away' % int(round(distance))
 
 			if distance < MAX_DISTANCE:
 				map_html = '''
@@ -110,12 +112,14 @@ class NotifyHandler(webapp2.RequestHandler):
 						<div class="text-auto-size">
 							<p class="yellow">Reminder</p>
 							<p>{2}</p>
+							<p style="font-size:.7em;">{3}</p>
 						</div>
 					</section>
-				</article>'''.format(lat, lng, reminder.title)
+				</article>'''.format(lat, lng, reminder.title, distance_msg)
 
 				body = {
 						'html': map_html,
+						'text': reminder.title,
 						'location': location,
 						'menuItems': [{'action': 'NAVIGATE'}],
 						'notification': {'level': 'DEFAULT'}

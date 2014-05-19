@@ -32,9 +32,9 @@ limitations under the License.
     <div class="container">
       <h1><a class="brand" href="#" id="nav-title">Note to Self</a></h1>
 
-      <div class="nav-collapse collapse">
+      <div id="signout-button">
         <form class="navbar-form pull-right" action="/signout" method="post">
-          <button type="submit" class="btn">Sign out</button>
+          <button type="submit">Sign out</button>
         </form>
       </div>
     </div>
@@ -72,34 +72,29 @@ limitations under the License.
           </tr>
         </thead>
         <tbody>
-          <tr class="entry">
-            <td class="name">Check my PO Box</td>
-            <td class="latitude">37.42410968092256</td>
-            <td class="longitude">-122.16878414154053</td>
-            <td class="delete"><button class="delete_button" data-id="0">Delete</button></td>
-          </tr>
-          {% for reminder in reminders %}
-            <form action="/" method="post">
-              <input type="hidden" name="operation" value="deleteReminder">
-              <tr class="entry">
-                <td class="name">{{ reminder.title }}</td>
-                <td class="latitude">{{ reminder.latitude }}</td>
-                <td class="longitude">{{ reminder.longitude }}</td>
-                <input name="reminder-id" value="{{ reminder.reminder_id }}" type="hidden"></input>
-                <td class="delete"><button class="delete_button" data-id="{{ reminder.reminder_id }}" type="submit">Delete</button></td>
-              </tr>
-            </form>
+          {% for reminder in reminders %}      
+            <tr class="entry">
+              <td class="name">{{ reminder.title }}</td>
+              <td class="latitude">{{ reminder.latitude }}</td>
+              <td class="longitude">{{ reminder.longitude }}</td>
+              <td class="delete">
+                <form action="/" method="post">
+                  <input type="hidden" name="operation" value="deleteReminder"></input>
+                  <button class="delete_button" data-id="{{ reminder.reminder_id }}" type="submit">Delete</button>
+                  <input name="reminder-id" value="{{ reminder.reminder_id }}" type="hidden"></input>
+                </form>
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
 
       <div id="add-reminder-container" style="display:none;">
-        <h4>Title:</h4> 
+        <h4>Add a Reminder</h4> 
         <!--<button id="add-reminder">Add Reminder</button>-->
         <form action="/" method="post">
           <input type="hidden" name="operation" value="insertReminder">
           <input id="reminder-id" name="reminder-id" type="hidden"></input>
-          <input id="reminder-name" name="reminder-name" type="text"></input>
           <input id="sent-reminder-name" name="sent-reminder-name" type="hidden"></input>
           <input id="reminder-lat" name="reminder-lat" type="hidden"></input>
           <input id="reminder-lng" name="reminder-lng" type="hidden"></input>
@@ -107,21 +102,22 @@ limitations under the License.
           <input id="map-bound2-lat" name="map-bound2-lat" type="hidden"></input>
           <input id="map-bound1-lng" name="map-bound1-lng" type="hidden"></input>
           <input id="map-bound2-lng" name="map-bound2-lng" type="hidden"></input>
+
+          <input id="reminder-name" name="reminder-name" type="text" placeholder="Type reminder text here"></input>
           <br>
-          <button id="add-reminder" class="btn btn-block" type="submit">
-            Add Reminder
-          </button>
+          <button id="add-reminder" class="reminder-btn" type="submit">Add Reminder</button>
+          <button id="cancel" class="reminder-btn">Cancel</button>
         </form>
-        <button id="cancel">Cancel</button>
       </div>
     </div>
   </div>
 
 
-  <h1>Your Recent Timeline</h1>
+  
   <div class="row">
 
     <div class="col-md-4" style="margin-top: 5px;">
+      <h2>Your Recent Timeline</h2>
       {% if timelineItems %}
         {% for timelineItem in timelineItems %}
         <div class="timeline-item">

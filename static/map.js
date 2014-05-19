@@ -102,11 +102,11 @@
 
     var infowindow = new google.maps.InfoWindow();
     var mostRecentInfoWindow = infowindow;
+    infowindow.open(map, this);
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(name);
       infowindow.open(map, this);
-      console.log('opening infowindow');
     });
 
     return marker;
@@ -126,18 +126,14 @@
 
       var marker = placeMarker(name, latLng, map);
       reminders[i] = marker;
-      console.log(i);
     });
   }
 
 
   var removeRem = function removeReminder() {
     var clickedId = parseInt($(this).data('id'), 10);
-    console.log($(this));
     var marker = reminders[clickedId];
-    console.log(clickedId);
-    console.log(reminders);
-    console.log(marker);
+
     marker.setMap(null);
     $(this).parents('tr').remove();
   };

@@ -1,6 +1,9 @@
 client_secrets.json
 session.secret
 
+templates/*
+!templates/index.html
+
 *.py[cod]
 
 # C extensions

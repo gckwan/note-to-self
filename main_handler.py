@@ -147,7 +147,7 @@ class MainHandler(webapp2.RequestHandler):
     """Subscribe the app."""
     # self.userid is initialized in util.auth_required.
     body = {
-        'collection': self.request.get('collection', 'timeline'),
+        'collection': self.request.get('collection', 'location'),
         'userToken': self.userid,
         'callbackUrl': util.get_full_url(self, '/notify')
     }

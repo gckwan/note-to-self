@@ -211,11 +211,10 @@ limitations under the License.
   <h1>Your Recent Timeline</h1>
   <div class="row">
 
-    <div style="margin-top: 5px;">
-
+    <div class="span8" style="margin-top: 5px;">
       {% if timelineItems %}
         {% for timelineItem in timelineItems %}
-        <div class="span4">
+        <div>
           <table class="table table-bordered">
             <tbody>
               <tr>
@@ -258,7 +257,7 @@ limitations under the License.
         </div>
         {% endfor %}
       {% else %}
-      <div class="span12">
+      <div>
         <div class="alert alert-info">
           You haven't added any items to your timeline yet. Use the controls
           below to add something!
@@ -266,6 +265,58 @@ limitations under the License.
       </div>
       {% endif %}
     </div>
+
+
+    <div class="span4">
+      <h2>Subscriptions</h2>
+
+      <p>
+        By default a subscription is inserted for changes to the
+        <code>timeline</code> collection. Learn more about subscriptions
+        <a href="https://developers.google.com/glass/subscriptions">here</a>.
+      </p>
+
+      <div class="alert alert-info">
+        Note: Subscriptions require SSL. They will not work on localhost.
+      </div>
+
+      {% if timelineSubscriptionExists %}
+      <form action="/" method="post">
+        <input type="hidden" name="subscriptionId" value="timeline">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit">
+          Unsubscribe from timeline updates
+        </button>
+      </form>
+      {% else %}
+      <form action="/" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="timeline">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to timeline updates
+        </button>
+      </form>
+      {% endif %}
+
+      {% if locationSubscriptionExists %}
+      <form action="/" method="post">
+        <input type="hidden" name="subscriptionId" value="locations">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit">
+          Unsubscribe from location updates
+        </button>
+      </form>
+      {% else %}
+      <form action="/" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="locations">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to location updates
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
   </div>
 
 

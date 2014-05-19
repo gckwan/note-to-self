@@ -144,7 +144,8 @@ class MainHandler(webapp2.RequestHandler):
         'insertContact': self._insert_contact,
         'deleteContact': self._delete_contact,
         'deleteTimelineItem': self._delete_timeline_item,
-        'insertReminder': self._insert_reminder
+        'insertReminder': self._insert_reminder,
+        'deleteReminder': self._delete_reminder
     }
     if operation in operations:
       message = operations[operation]()
@@ -204,7 +205,6 @@ class MainHandler(webapp2.RequestHandler):
     lat = self.request.get('reminder-lat')
     lng = self.request.get('reminder-lng')
     text = self.request.get('sent-reminder-name')
-    logging.info('THIS IS TEXT:' + text)
     
     r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), user = users.get_current_user().user_id())
     r.put()
@@ -230,6 +230,16 @@ class MainHandler(webapp2.RequestHandler):
 	
     self.mirror_service.timeline().insert(body=body).execute()
     return  'A timeline reminder has been inserted.'
+
+  def _delete_reminder(self):
+    '''Delete a reminder.'''
+    logging.info('Deleting a reminder')
+    rem_id = self.request.get('reminder-id')
+    deleteReminder = db.GqlQuery("select * from Reminder where reminder_id = :1", int(rem_id))
+    result = deleteReminder.get()
+    logging.info(result)
+    db.delete(result)
+    return 'A timeline reminder has been deleted.'
 
   def _insert_paginated_item(self):
     """Insert a paginated timeline item."""

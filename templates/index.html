@@ -65,19 +65,27 @@ limitations under the License.
           </tr>
         </thead>
         <tbody>
-          <tr class="entry">
-            <td class="name">Check mail when I get to the PO box</td>
-            <td class="latitude">37.42410968092256</td>
-            <td class="longitude">-122.16878414154053</td>
-            <td class="delete"><button class="delete_button" data-id="0">Delete</button></td>
-          </tr>
-          {% for reminder in reminders %}
+          <form action="/" method="post">
+            <input type="hidden" name="operation" value="deleteReminder">
             <tr class="entry">
-              <td class="name">{{ reminder.title }}</td>
-              <td class="latitude">{{ reminder.latitude }}</td>
-              <td class="longitude">{{ reminder.longitude }}</td>
-              <td class="delete"><button class="delete_button" data-id="{{ reminder.reminder_id }}">Delete</button></td>
+              <td class="name">Check mail when I get to the PO box</td>
+              <td class="latitude">37.42410968092256</td>
+              <td class="longitude">-122.16878414154053</td>
+              <input name="reminder-id" value="0" type="hidden"></input>
+              <td class="delete"><button class="delete_button" data-id="0">Delete</button></td>
             </tr>
+          </form>
+          {% for reminder in reminders %}
+            <form action="/" method="post">
+              <input type="hidden" name="operation" value="deleteReminder">
+              <tr class="entry">
+                <td class="name">{{ reminder.title }}</td>
+                <td class="latitude">{{ reminder.latitude }}</td>
+                <td class="longitude">{{ reminder.longitude }}</td>
+                <input name="reminder-id" value="{{ reminder.reminder_id }}" type="hidden"></input>
+                <td class="delete"><button class="delete_button" data-id="{{ reminder.reminder_id }}" type="submit">Delete</button></td>
+              </tr>
+            </form>
           {% endfor %}
         </tbody>
       </table>

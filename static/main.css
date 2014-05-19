@@ -16,7 +16,7 @@ table td form, table td input[type='text'], table td button {
 }
 
 #content {
-  margin-top: 120px;
+  margin-top: 100px;
 }
 
 .latitude, .longitude, .hidden-header {

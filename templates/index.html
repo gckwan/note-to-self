@@ -54,6 +54,14 @@ limitations under the License.
       {% if message %}
         <div class="alert alert-info">{{ message }}</div>
       {% endif %}
+
+      <form action="/" method="post" id="get-location-button">
+        <input type="hidden" name="operation" value="printLocation">
+        <button type="submit">
+          Get nearby reminders
+        </button>
+      </form>
+
       <table id="reminders">
         <thead>
           <tr>

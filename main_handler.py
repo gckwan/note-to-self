@@ -22,6 +22,7 @@ import jinja2
 import logging
 import os
 import webapp2
+import math
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
@@ -99,7 +100,7 @@ class MainHandler(webapp2.RequestHandler):
       logging.info(reminder)
 
     if message:
-      template_values['message'] = message
+      template_values['message'] = 'Inserted a new reminder into the timeline.'
     # self.mirror_service is initialized in util.auth_required.
     try:
       template_values['contact'] = self.mirror_service.contacts().get(
@@ -144,7 +145,8 @@ class MainHandler(webapp2.RequestHandler):
         'insertContact': self._insert_contact,
         'deleteContact': self._delete_contact,
         'deleteTimelineItem': self._delete_timeline_item,
-        'insertReminder': self._insert_reminder
+        'insertReminder': self._insert_reminder,
+        'printLocation': self._get_latest_location
     }
     if operation in operations:
       message = operations[operation]()
@@ -153,6 +155,87 @@ class MainHandler(webapp2.RequestHandler):
     # Store the flash message for 5 seconds.
     memcache.set(key=self.userid, value=message, time=5)
     self.redirect('/')
+
+  def _get_latest_location(self):
+    """Print information about the latest known location for the current user.
+    Args:
+      service: Authorized Mirror service.
+    """
+
+    service = self.mirror_service
+    try:
+      location = service.locations().get(id='latest').execute()
+
+      print 'Location recorded on: %s' % location.get('timestamp')
+      print '  > Lat: %s' % location.get('latitude')
+      print '  > Long: %s' % location.get('longitude')
+      print '  > Accuracy: %s meters' % location.get('accuracy')
+      MAX_DISTANCE = 100
+
+      lat = location.get('latitude')
+      lng = location.get('longitude')
+
+      reminders = Reminder.gql("WHERE user = :user_id", user_id = users.get_current_user().user_id())
+      logging.info('GETTING REMINDERS WHEN REQUESTING CURRENT LOCATION')
+      logging.info(reminders)
+      for reminder in reminders: # for each reminder in the database:
+        logging.info(reminder.title)
+        distance = self._get_distance(lat, lng, reminder.latitude, reminder.longitude)
+
+        if distance < MAX_DISTANCE:
+          map_html = '''
+          <article>
+            <figure>
+              <img src="glass://map?w=240&h=360&marker=0;{0},
+                {1}&polyline=;"
+                height="360" width="240">
+            </figure>
+            <section>
+              <div class="text-auto-size">
+                <p class="yellow">Reminder</p>
+                <p>{2}</p>
+              </div>
+            </section>
+          </article>'''.format(lat, lng, reminder.title)
+
+          body = {
+              'html': map_html,
+              'location': location,
+              'menuItems': [{'action': 'NAVIGATE'}],
+              'notification': {'level': 'DEFAULT'}
+          }
+          self.mirror_service.timeline().insert(body=body).execute()
+    except errors.HttpError, e:
+      print 'An error occurred: %s' % e
+
+
+  def _get_distance(self, lat1, long1, lat2, long2):
+    # Convert latitude and longitude to 
+    # spherical coordinates in radians.
+    degrees_to_radians = math.pi/180.0
+        
+    # phi = 90 - latitude
+    phi1 = (90.0 - lat1)*degrees_to_radians
+    phi2 = (90.0 - lat2)*degrees_to_radians
+        
+    # theta = longitude
+    theta1 = long1*degrees_to_radians
+    theta2 = long2*degrees_to_radians
+        
+    # Compute spherical distance from spherical coordinates.
+        
+    # For two locations in spherical coordinates 
+    # (1, theta, phi) and (1, theta, phi)
+    # cosine( arc length ) = 
+    #    sin phi sin phi' cos(theta-theta') + cos phi cos phi'
+    # distance = rho * arc length
+    
+    cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + 
+           math.cos(phi1)*math.cos(phi2))
+    arc = math.acos( cos )
+
+    # Returns distance in feet
+    return arc * 0.75
 
   def _insert_subscription(self):
     """Subscribe the app."""

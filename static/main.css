@@ -27,9 +27,15 @@ table td form, table td input[type='text'], table td button {
   display: inline-block;
 }
 
+#get-location-button {
+  position: absolute;
+  margin-left: 302px;
+}
+
 #nav {
   background-color: steelblue;
   box-shadow: 2px 2px 2px #999;
+  border-bottom: none;
   height: 80px;
 }
 

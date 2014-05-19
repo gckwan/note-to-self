@@ -147,7 +147,7 @@ class MainHandler(webapp2.RequestHandler):
     """Subscribe the app."""
     # self.userid is initialized in util.auth_required.
     body = {
-        'collection': self.request.get('collection', 'location'),
+        'collection': self.request.get('collection', 'timeline'),
         'userToken': self.userid,
         'callbackUrl': util.get_full_url(self, '/notify')
     }
@@ -195,9 +195,7 @@ class MainHandler(webapp2.RequestHandler):
     text = self.request.get('sent-reminder-name')
     logging.info('THIS IS TEXT:' + text)
     
-    logging.info('Current User Email: ' + users.get_current_user().email())
-    
-    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = 'blah')
+    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = 'user')
     r.put()
 
     map_html = '''

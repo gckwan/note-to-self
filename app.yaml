@@ -12,6 +12,7 @@ handlers:
 - url: /.*
   script: main.app
   secure: always
+  login: required
 
 
 libraries:

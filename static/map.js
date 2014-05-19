@@ -148,6 +148,7 @@
      entry to the reminders table, add a new marker to the map with
      the reminder title, and add the marker to the markers object. */
   $('#add-reminder').click(function() {
+  	$("#reminder-id").val(id);
     var name = $('#reminder-name').val();
     $("#sent-reminder-name").val(name);
     var lat = $('#reminder-lat').val();

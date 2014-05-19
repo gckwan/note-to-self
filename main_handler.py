@@ -25,6 +25,8 @@ import webapp2
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
+from google.appengine.api import users
+from google.appengine.ext import db
 
 import httplib2
 from apiclient import errors
@@ -33,6 +35,7 @@ from apiclient.http import BatchHttpRequest
 from oauth2client.appengine import StorageByKeyName
 
 from model import Credentials
+from model import Reminder
 import util
 
 
@@ -186,10 +189,16 @@ class MainHandler(webapp2.RequestHandler):
   def _insert_reminder(self):
     """Insert a reminder."""
     logging.info('Inserting reminder')
+    rem_id = self.request.get('reminder-id')
     lat = self.request.get('reminder-lat')
     lng = self.request.get('reminder-lng')
     text = self.request.get('sent-reminder-name')
     logging.info('THIS IS TEXT:' + text)
+    
+    logging.info('Current User Email: ' + users.get_current_user().email())
+    
+    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = 'blah')
+    r.put()
 
     map_html = '''
     <article>
@@ -209,7 +218,7 @@ class MainHandler(webapp2.RequestHandler):
         'html': map_html,
         'notification': {'level': 'DEFAULT'}
     }
-
+	
     self.mirror_service.timeline().insert(body=body).execute()
     return  'A timeline reminder has been inserted.'
 

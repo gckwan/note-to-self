@@ -18,9 +18,9 @@ limitations under the License.
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Note to Self</title>
-  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+  <!-- <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         media="screen">
-<!--   <link href="/static/bootstrap/css/bootstrap-responsive.min.css"
+		<link href="/static/bootstrap/css/bootstrap-responsive.min.css"
         rel="stylesheet" media="screen"> -->
   <link href="/static/main.css" rel="stylesheet" media="screen">
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Cousine|Raleway|Lato:400,700' rel='stylesheet' type='text/css'>
@@ -42,36 +42,41 @@ limitations under the License.
 </div> -->
 
 <div class="container">
-  <h1>Note to Self</h1>
-  <p>Right-click on the map to add a new reminder.</p>
+	<table id="nav-bar">
+		<tr>
+			<td width="90%"><h1>Note to Self</h1></td>
+			<td width="10%" class="right-nav"><a href="#" class="nav-link">Logout</a></td>
+		</tr>
+	</table>
   <div class="row" id="map-container-row">
     <div class="span6">
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
       <div id="map-canvas"></div>
     </div>
     <div class="span6">
+      <p class="instructions">Right-click on the map to add a new reminder.</p>
       <table id="reminders">
         <thead>
           <tr>
-            <th width="40%">Reminder</th>
-            <th width="20%">Latitude</th>
-            <th width="20%">Longitude</th>
+            <th width="30%">Reminder</th>
+            <th width="25%">Latitude</th>
+            <th width="25%">Longitude</th>
             <th width="20%"></th>
           </tr>
         </thead>
         <tbody>
           <tr class="entry">
-            <td class="name">Check mail</td>
+            <td class="name">Check mail when I get to the PO box</td>
             <td class="latitude">37.42410968092256</td>
             <td class="longitude">-122.16878414154053</td>
-            <td><button class="delete" data-id="0">Delete</button></td>
+            <td class="delete"><button class="delete_button" data-id="0">Delete</button></td>
           </tr>
           {% for reminder in reminders %}
             <tr class="entry">
               <td class="name">{{ reminder.title }}</td>
               <td class="latitude">{{ reminder.latitude }}</td>
               <td class="longitude">{{ reminder.longitude }}</td>
-              <td><button class="delete" data-id="{{ reminder.reminder_id }}">Delete</button></td>
+              <td class="delete"><button class="delete_button" data-id="{{ reminder.reminder_id }}">Delete</button></td>
             </tr>
           {% endfor %}
         </tbody>

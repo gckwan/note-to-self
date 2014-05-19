@@ -152,14 +152,14 @@
     console.log(lat);
     console.log(lng);
 
-    var deleteButton = $('<button>').addClass('delete').text('Delete').attr('data-id', id);
+    var deleteButton = $('<button>').addClass('delete_button').text('Delete').attr('data-id', id);
     deleteButton.click(removeRem);
 
     $('#reminders tbody').append(
       $('<tr>').append($('<td>').text(name))
                .append($('<td>').text(lat))
                .append($('<td>').text(lng))
-               .append($('<td>').append(deleteButton))
+               .append($('<td class="delete">').append(deleteButton))
       );
     $('#add-reminder-container').hide();
 

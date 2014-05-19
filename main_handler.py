@@ -206,7 +206,7 @@ class MainHandler(webapp2.RequestHandler):
     text = self.request.get('sent-reminder-name')
     logging.info('THIS IS TEXT:' + text)
     
-    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = users.get_current_user().user_id())
+    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), user = users.get_current_user().user_id())
     r.put()
 
     map_html = '''

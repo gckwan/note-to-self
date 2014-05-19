@@ -100,3 +100,7 @@ td {
   font-weight: 300;
 }
 
+.add-reminder-container {
+  overflow: hidden;
+}
+

@@ -131,8 +131,11 @@
 
 
   var removeRem = function removeReminder() {
-    var clickedId = parseInt($(this).data('id'), 10);
+    var clickedId = parseInt($(this).children('button').data('id'), 10);
+    console.log(reminders);
+    console.log(clickedId);
     var marker = reminders[clickedId];
+    console.log(marker);
 
     marker.setMap(null);
     $(this).parents('tr').remove();
@@ -156,7 +159,7 @@
     deleteButton.click(removeRem);
 
     $('#reminders tbody').append(
-      $('<tr>').append($('<td>').text(name))
+      $('<tr>').append($('<td class="name">').text(name))
                .append($('<td>').text(lat))
                .append($('<td>').text(lng))
                .append($('<td class="delete">').append(deleteButton))

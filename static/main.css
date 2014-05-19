@@ -15,6 +15,10 @@ table td form, table td input[type='text'], table td button {
     margin-bottom: 0;
 }
 
+.timeline-item {
+  display: inline-block;
+}
+
 img.button-icon {
     width: 60px;
 }

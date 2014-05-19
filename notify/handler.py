@@ -27,6 +27,8 @@ from random import choice
 from apiclient.http import MediaIoBaseUpload
 from oauth2client.appengine import StorageByKeyName
 from google.appengine.ext import db
+from google.appengine.api import users
+
 
 from model import Credentials
 import util
@@ -92,8 +94,7 @@ class NotifyHandler(webapp2.RequestHandler):
 		lat = location.get('latitude')
 		lng = location.get('longitude')
 
-		reminders = db.GqlQuery("SELECT * FROM Reminder") # Gets all reminders from the database
-
+		reminders = Reminder.gql("WHERE user = :user_id", user_id = users.get_current_user().user_id())
 		for reminder in reminders: # for each reminder in the database:
 			distance = _get_distance(lat, lng, reminder.latitude, reminder.longitude)
 

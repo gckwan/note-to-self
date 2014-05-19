@@ -25,8 +25,9 @@ import webapp2
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
-from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.api import users
+
 
 import httplib2
 from apiclient import errors
@@ -87,6 +88,16 @@ class MainHandler(webapp2.RequestHandler):
   def _render_template(self, message=None):
     """Render the main page template."""
     template_values = {'userId': self.userid}
+
+    reminders = Reminder.gql("WHERE user = :user_id", user_id = users.get_current_user().user_id())
+    template_values['reminders'] = reminders
+
+    logging.info(reminders)
+
+    for reminder in reminders:
+      logging.info('reminder: ')
+      logging.info(reminder)
+
     if message:
       template_values['message'] = message
     # self.mirror_service is initialized in util.auth_required.
@@ -195,7 +206,7 @@ class MainHandler(webapp2.RequestHandler):
     text = self.request.get('sent-reminder-name')
     logging.info('THIS IS TEXT:' + text)
     
-    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = 'user')
+    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), email = users.get_current_user().user_id())
     r.put()
 
     map_html = '''

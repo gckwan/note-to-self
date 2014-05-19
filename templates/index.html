@@ -20,14 +20,14 @@ limitations under the License.
   <title>Note to Self</title>
   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         media="screen">
-  <link href="/static/bootstrap/css/bootstrap-responsive.min.css"
-        rel="stylesheet" media="screen">
+<!--   <link href="/static/bootstrap/css/bootstrap-responsive.min.css"
+        rel="stylesheet" media="screen"> -->
   <link href="/static/main.css" rel="stylesheet" media="screen">
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Cousine|Raleway|Lato:400,700' rel='stylesheet' type='text/css'>
 
 </head>
 <body>
- <div class="navbar navbar-inverse navbar-fixed-top">
+<!--  <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
       <a class="brand" href="#">Glassware Starter Project: Python Edition</a>
@@ -39,7 +39,7 @@ limitations under the License.
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="container">
   <h1>Note to Self</h1>
@@ -66,6 +66,14 @@ limitations under the License.
             <td class="longitude">-122.16878414154053</td>
             <td><button class="delete" data-id="0">Delete</button></td>
           </tr>
+          {% for reminder in reminders %}
+            <tr class="entry">
+              <td class="name">{{ reminder.title }}</td>
+              <td class="latitude">{{ reminder.latitude }}</td>
+              <td class="longitude">{{ reminder.longitude }}</td>
+              <td><button class="delete" data-id="{{ reminder.reminder_id }}">Delete</button></td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
 
@@ -98,7 +106,7 @@ limitations under the License.
   <div class="alert alert-info">{{ message }}</div>
   {% endif %}
 
-  <h1>Your Recent Timeline</h1>
+<!--   <h1>Your Recent Timeline</h1>
   <div class="row" style="display:none;">
 
     <div style="margin-top: 5px;">
@@ -156,7 +164,7 @@ limitations under the License.
       </div>
       {% endif %}
     </div>
-  </div>
+  </div> -->
 
   <div class="row">
     <div class="span6">
@@ -212,11 +220,10 @@ limitations under the License.
   <h1>Your Recent Timeline</h1>
   <div class="row">
 
-    <div style="margin-top: 5px;">
-
+    <div class="span8" style="margin-top: 5px;">
       {% if timelineItems %}
         {% for timelineItem in timelineItems %}
-        <div class="span4">
+        <div class="timeline-item">
           <table class="table table-bordered">
             <tbody>
               <tr>
@@ -259,7 +266,7 @@ limitations under the License.
         </div>
         {% endfor %}
       {% else %}
-      <div class="span12">
+      <div>
         <div class="alert alert-info">
           You haven't added any items to your timeline yet. Use the controls
           below to add something!
@@ -267,6 +274,58 @@ limitations under the License.
       </div>
       {% endif %}
     </div>
+
+
+    <div class="col-md-4">
+      <h2>Subscriptions</h2>
+
+      <p>
+        By default a subscription is inserted for changes to the
+        <code>timeline</code> collection. Learn more about subscriptions
+        <a href="https://developers.google.com/glass/subscriptions">here</a>.
+      </p>
+
+      <div class="alert alert-info">
+        Note: Subscriptions require SSL. They will not work on localhost.
+      </div>
+
+      {% if timelineSubscriptionExists %}
+      <form action="/" method="post">
+        <input type="hidden" name="subscriptionId" value="timeline">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit">
+          Unsubscribe from timeline updates
+        </button>
+      </form>
+      {% else %}
+      <form action="/" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="timeline">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to timeline updates
+        </button>
+      </form>
+      {% endif %}
+
+      {% if locationSubscriptionExists %}
+      <form action="/" method="post">
+        <input type="hidden" name="subscriptionId" value="locations">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit">
+          Unsubscribe from location updates
+        </button>
+      </form>
+      {% else %}
+      <form action="/" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="locations">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to location updates
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
   </div>
 
 

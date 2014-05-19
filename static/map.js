@@ -102,7 +102,7 @@
 
     var infowindow = new google.maps.InfoWindow();
     var mostRecentInfoWindow = infowindow;
-    infowindow.open(map, this);
+    //infowindow.open(map, this);
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(name);

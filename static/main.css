@@ -50,7 +50,7 @@ table td form, table td input[type='text'], table td button {
 }
 
 #nav {
-  background-color: steelblue;
+  background-color: #34AADC;
   box-shadow: 2px 2px 2px #999;
   border-bottom: none;
   height: 80px;
@@ -165,12 +165,12 @@ button {
 }
 
 #add-reminder {
-	border-color: #007AFF;
-	color: #007AFF;	
+	border-color: #34AADC;
+	color: #34AADC;	
 }
 
 #add-reminder:hover {
-	background-color: #007AFF;
+	background-color: #34AADC;
 	color: white;
 }
 

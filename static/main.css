@@ -10,13 +10,19 @@ body {
     }
 }
 
+@media (max-width: 680px) {
+    .span6 {
+      width: 100% !important;
+    }
+}
+
 /* Get rid of margin under form controls that are in table cells. */
 table td form, table td input[type='text'], table td button {
     margin-bottom: 0;
 }
 
-#content {
-  margin-top: 110px;
+h1 {
+  margin-top: 8px;
 }
 
 .latitude, .longitude, .hidden-header {
@@ -34,7 +40,7 @@ table td form, table td input[type='text'], table td button {
 
 #signout-button {
   position: absolute;
-  top: 17px;
+  top: 24px;
   right: 0;
 }
 
@@ -45,8 +51,9 @@ table td form, table td input[type='text'], table td button {
 }
 
 #get-location-button {
+  width: 173px;
   position: absolute;
-  margin-left: 302px;
+  right: 0;
 }
 
 #nav {
@@ -116,12 +123,16 @@ h4 {
 	margin-bottom: 10px;	
 }
 
+#reminders-cont {
+  position: relative;
+  padding-right: 0;
+}
+
 #reminders th {
   text-align: left;
   font-size: 20pt;
   padding-bottom: 10px;
 }
-
 
 #reminders td.name:first-child {
   border-top: 1px solid #ccc;
@@ -134,7 +145,6 @@ h4 {
 
 #reminders td {
 	padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 8px;
 }
 
@@ -142,6 +152,7 @@ h4 {
   text-align: center;
   vertical-align: middle;	
   padding: 10px 20px;
+  padding-right: 0;
 }
 
 button {

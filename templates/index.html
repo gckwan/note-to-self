@@ -20,23 +20,20 @@ limitations under the License.
   <title>Note to Self</title>
   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         media="screen">
-<!-- 		<link href="/static/bootstrap/css/bootstrap-responsive.min.css"
-        rel="stylesheet" media="screen"> -->
   <link href="/static/main.css" rel="stylesheet" media="screen">
   <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500' rel='stylesheet' type='text/css'>
 
 </head>
 <body>
- <div id="nav" class="navbar navbar-inverse navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <h1><a class="brand" href="#" id="nav-title">Note to Self</a></h1>
-
-      <div id="signout-button">
-        <form class="navbar-form pull-right" action="/signout" method="post">
-          <button type="submit">Sign out</button>
-        </form>
-      </div>
+ <div id="nav" class="navbar navbar-inverse navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+     <a class="navbar-brand" href="#" id="nav-title"><h1>Note to Self</h1></a>
+    </div>
+    <div id="signout-button">
+      <form class="pull-right" action="/signout" method="post">
+        <button type="submit">Sign out</button>
+      </form>
     </div>
   </div>
 </div>
@@ -44,13 +41,13 @@ limitations under the License.
 <div id="content" class="container">
   <p class="instructions">Right-click on the map to add a new reminder.</p>
   <div class="row" id="map-container-row">
-    <div class="span6">
+    <div class="span6" id="map-cont">
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
       <div id="map-canvas"></div>
     </div>
 
 
-    <div class="span6">
+    <div class="span6" id="reminders-cont">
       {% if message %}
         <div class="alert alert-info">{{ message }}</div>
       {% endif %}
@@ -61,11 +58,10 @@ limitations under the License.
           Get nearby reminders
         </button>
       </form>
-
       <table id="reminders">
         <thead>
           <tr>
-            <th width="80%">Reminders</th>
+            <th width="80%" id="reminders-th">Reminders</th>
             <th width="0%" class="hidden-header">Latitude</th>
             <th width="0%" class="hidden-header">Longitude</th>
             <th width="20%"></th>
@@ -74,10 +70,10 @@ limitations under the License.
         <tbody>
           {% for reminder in reminders %}      
             <tr class="entry">
-              <td class="name">{{ reminder.title }}</td>
+              <td class="name" width="100%">{{ reminder.title }}</td>
               <td class="latitude">{{ reminder.latitude }}</td>
               <td class="longitude">{{ reminder.longitude }}</td>
-              <td class="delete">
+              <td class="delete" width="20%">
                 <form action="/" method="post">
                   <input type="hidden" name="operation" value="deleteReminder"></input>
                   <button class="delete_button" data-id="{{ reminder.reminder_id }}" type="submit">Delete</button>
@@ -114,7 +110,7 @@ limitations under the License.
 
 
   
-  <div class="row">
+  <!-- <div class="row">
 
     <div class="col-md-4" style="margin-top: 5px;">
       <h2>Your Recent Timeline</h2>
@@ -222,7 +218,7 @@ limitations under the License.
         </button>
       </form>
       {% endif %}
-    </div>
+    </div> -->
 
   </div>
 

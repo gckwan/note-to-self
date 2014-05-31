@@ -88,6 +88,36 @@
       searchBox.setBounds(bounds);
     });
 
+    function LongClick(map, length) {
+      this.length_ = length;
+      var me = this;
+      me.map_ = map;
+      google.maps.event.addListener(map, 'mousedown', function(e) { me.onMouseDown_(e) });
+      google.maps.event.addListener(map, 'mouseup', function(e) { me.onMouseUp_(e) });   
+    }   
+
+    LongClick.prototype.onMouseUp_ = function(e) {
+        var now = +new Date;
+        if (now - this.down_ > this.length_) {
+            google.maps.event.trigger(this.map_, 'longpress', e);
+        }   
+    }   
+
+    LongClick.prototype.onMouseDown_ = function() {
+        this.down_ = +new Date;   
+    }
+
+    new LongClick(map, 300);
+    google.maps.event.addListener(map, 'longpress', function(event) {
+      mostRecentMarker = placeMarker("Set reminder?", event.latLng, map);
+      console.log('adding a place marker');
+
+      $('#reminder-lat').val(event.latLng.lat());
+      $('#reminder-lng').val(event.latLng.lng());
+      $('#add-reminder-container').show();
+    });
+    addReminderMarkers(map);
+
     google.maps.event.addListener(map, 'rightclick', function(event) {
       mostRecentMarker = placeMarker("Set reminder?", event.latLng, map);
       console.log('adding a place marker');

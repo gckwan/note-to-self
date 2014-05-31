@@ -15,12 +15,25 @@ body {
       width: 100% !important;
     }
 
+    .container {
+      padding-right: 30px !important;
+      padding-left: 30px !important;
+    }
+
     .instructions {
       display: none;
     }
 
-    #map-cont {
-      display: none;
+    #add-reminder-container {
+      width: 100% !important;
+    }
+
+    #cancel {
+      margin: 0 !important;
+    }
+
+    #add-reminder {
+      margin-bottom: 10px;
     }
 
     #reminders-cont {

@@ -14,11 +14,37 @@ body {
     .span6 {
       width: 100% !important;
     }
+
+    .instructions {
+      display: none;
+    }
+
+    #map-cont {
+      display: none;
+    }
+
+    #reminders-cont {
+      padding-right: 15px !important;
+    }
+
+    #get-location-button {
+      width: 100% !important;
+      position: relative !important;
+      margin-bottom: 20px !important;
+    }
+
+    button {
+      width: 100%;
+    }
 }
 
 /* Get rid of margin under form controls that are in table cells. */
 table td form, table td input[type='text'], table td button {
     margin-bottom: 0;
+}
+
+td.name {
+  text-overflow: ellipsis;
 }
 
 h1 {
@@ -180,6 +206,10 @@ button {
 	color: #34AADC;	
 }
 
+#add-nearby-reminder-container {
+  margin-bottom: 30px;
+}
+
 #add-reminder:hover {
 	background-color: #34AADC;
 	color: white;
@@ -204,7 +234,7 @@ button {
   margin-top: 30px;
 }
 
-#reminder-name {
+#reminder-name, #nearby-reminder-name {
 	width: 100%;
 	margin-bottom: 10px;
 	outline-color: #C7C7CC;

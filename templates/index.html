@@ -49,8 +49,26 @@ limitations under the License.
 
     <div class="span6" id="reminders-cont">
       {% if message %}
-        <div class="alert alert-info">{{ message }}</div>
+        <div class="alert alert-info" style="display:block">{{ message }}</div>
+      {% else %}
+        <div class="alert alert-info" style="display:none"></div>
       {% endif %}
+
+      
+      <div id="add-nearby-reminder-container">
+        <!--<button id="add-reminder">Add Reminder</button>-->
+        <form action="/" method="post">
+          <input type="hidden" name="operation" value="insertReminderHere">
+          <input id="nearby-reminder-id" name="nearby-reminder-id" type="hidden"></input>
+          <input id="sent-nearby-reminder-name" name="sent-nearby-reminder-name" type="hidden"></input>
+          <input id="nearby-reminder-lat" name="nearby-reminder-lat" type="hidden"></input>
+          <input id="nearby-reminder-lng" name="nearby-reminder-lng" type="hidden"></input>
+
+          <input id="nearby-reminder-name" name="nearby-reminder-name" type="text" placeholder="Type reminder text here"></input>
+          <br>
+          <button id="add-nearby-reminder" class="reminder-btn" type="submit">Add reminder at current location</button>
+        </form>
+      </div>
 
       <form action="/" method="post" id="get-location-button">
         <input type="hidden" name="operation" value="printLocation">

@@ -27,6 +27,13 @@
     $('#map-bound2-lat').val(bound2_lat);
     $('#map-bound2-lng').val(bound2_lng);
 
+    if (navigator.geolocation)
+    {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else{
+      $('.alert').innerHTML = "Geolocation is not supported by this browser.";
+    }
+
     // Create the search box and link it to the UI element.
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
@@ -91,8 +98,11 @@
     });
     addReminderMarkers(map);
   }
-
-
+  
+  function showPosition(position) {
+    $('#nearby-reminder-lat').val(position.coords.latitude);
+    $('#nearby-reminder-lng').val(position.coords.longitude);
+  }
 
   function placeMarker(name, location, map) {
     var marker = new google.maps.Marker({
@@ -138,6 +148,28 @@
     $(this).parents('tr').remove();
   };
 
+  $('#add-nearby-reminder').click(function() {
+    $("#nearby-reminder-id").val(id);
+    var name = $('#nearby-reminder-name').val();
+    $("#sent-nearby-reminder-name").val(name);
+    var lat = $('#nearby-reminder-lat').val();
+    var lng = $('#nearby-reminder-lng').val();
+
+    var deleteButton = $('<button>').addClass('delete_button').text('Delete').attr('data-id', id);
+    deleteButton.click(removeRem);
+
+    $('#reminders tbody').append(
+      $('<tr>').append($('<td class="name">').text(name))
+               .append($('<td class="latitude">').text(lat))
+               .append($('<td class="longitude">').text(lng))
+               .append($('<td class="delete">').append(deleteButton))
+      );
+
+    mostRecentMarker.setMap(null);
+    $('#nearby-reminder-name').val('');
+    var marker = placeMarker(name, new google.maps.LatLng(lat, lng), map);
+    reminders[id++] = marker;
+  });
 
 
   /* When the user presses the button to add a reminder, add a new

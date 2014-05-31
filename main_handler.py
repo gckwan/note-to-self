@@ -146,6 +146,7 @@ class MainHandler(webapp2.RequestHandler):
         'deleteContact': self._delete_contact,
         'deleteTimelineItem': self._delete_timeline_item,
         'insertReminder': self._insert_reminder,
+        'insertReminderHere': self._insert_reminder_here,
         'printLocation': self._get_latest_location,
         'deleteReminder': self._delete_reminder
     }
@@ -297,6 +298,40 @@ class MainHandler(webapp2.RequestHandler):
     # self.mirror_service is initialized in util.auth_required.
     self.mirror_service.timeline().insert(body=body, media_body=media).execute()
     return  'A timeline item has been inserted.'
+
+  def _insert_reminder_here(self):
+    """Insert a reminder at current location."""
+    logging.info('Inserting reminder here')
+    rem_id = self.request.get('nearby-reminder-id')
+    lat = self.request.get('nearby-reminder-lat')
+    lng = self.request.get('nearby-reminder-lng')
+    text = self.request.get('sent-nearby-reminder-name')
+    
+    r = Reminder(reminder_id = int(rem_id), title = text, longitude = float(lng), latitude = float(lat), user = users.get_current_user().user_id())
+    r.put()
+
+    map_html = '''
+    <article>
+      <figure>
+        <img src="glass://map?w=240&h=360&marker=0;{0},
+          {1}&polyline=;"
+          height="360" width="240">
+      </figure>
+      <section>
+        <div class="text-auto-size">
+          <p class="yellow">Reminder</p>
+          <p>{2}</p>
+        </div>
+      </section>
+    </article>'''.format(lat, lng, text)
+    body = {
+        'html': map_html,
+        'text': text,
+        'notification': {'level': 'DEFAULT'}
+    }
+  
+    self.mirror_service.timeline().insert(body=body).execute()
+    return  'A timeline reminder has been inserted here.'
 
   def _insert_reminder(self):
     """Insert a reminder."""

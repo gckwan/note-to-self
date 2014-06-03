@@ -1,6 +1,6 @@
-Google Mirror API's Quickstart for Python
+Note to Self: A Geolocation-Based Reminder System for Google Glass
 ========================
 
-The documentation for this quickstart is maintained on developers.google.com.
-Please see here for more information:
-https://developers.google.com/glass/quickstart/python
+This web app, based on The Glass Mirror API's Python Quickstart project, delivers location-based reminders to a user's Google Glass. To develop using this repo, make sure you have generated appropriate keys via the Mirror API.
+
+To view a live version of this app, visit https://notetoself377.appspot.com/.
